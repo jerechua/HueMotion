@@ -16,9 +16,20 @@ final class HueListener extends BaseHueListener {
   }
 
   @Override public void onAccessPointsFound(List<PHAccessPoint> accessPoints) {
+
+    if (accessPoints.size() <= 0) {
+      // TODO: Consider re-searching access points here.
+      System.out.println("No access points found");
+    }
+
     for (PHAccessPoint accessPoint : accessPoints) {
       System.out.println(accessPoint);
     }
+    sdk.getAccessPointsFound().clear();
+    sdk.getAccessPointsFound().addAll(accessPoints);
+
+    // TODO: Connect to multiple access points.
+    connect(accessPoints.get(0));
   }
 
   @Override public void onCacheUpdated(List cacheNotificationsList, PHBridge bridge) {
@@ -27,4 +38,28 @@ final class HueListener extends BaseHueListener {
     }
   }
 
+  @Override public void onAuthenticationRequired(PHAccessPoint accessPoint) {
+    System.out.println("Authentication is required! Please press the bridge button.");
+    sdk.startPushlinkAuthentication(accessPoint) ;
+  }
+
+  @Override public void onError(int code, final String message) {
+    switch (code) {
+      case PHMessageType.PUSHLINK_BUTTON_NOT_PRESSED:
+        System.out.println("Pushlink not pressed! Waiting..");
+        break;
+      case PHMessageType.PUSHLINK_AUTHENTICATION_FAILED:
+        System.out.println("Pushlink failed, possibly due to button not being pressed. Good bye.");
+        System.exit(1);
+      default:
+        System.out.println("onError");
+        System.out.println(code);
+        System.out.println(message);
+    }
+  }
+
+  private void connect(PHAccessPoint accessPoint) {
+    System.out.println("Connection to access point: " + accessPoint.getMacAddress());
+    sdk.connect(accessPoint);
+  }
 }
