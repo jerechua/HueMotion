@@ -1,4 +1,4 @@
-package com.leaplight.listener;
+package com.huemotion.listener;
 
 import com.leapmotion.leap.Bone;
 import com.leapmotion.leap.Controller;
