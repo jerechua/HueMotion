@@ -11,6 +11,8 @@ public final class HueController {
 
   public HueController(String appName) {
     this.appName = appName;
+    // TODO: For next version, support multiple bridges. This probably means that this code will
+    // need to be moved to a "connect()" function.
     this.sdk = setupSDK(appName);
   }
 
