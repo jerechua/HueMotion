@@ -7,10 +7,12 @@ import java.io.IOException;
 
 public final class LeapLight {
 
+  private static final String APP_NAME = "LeapLight";
+
   public static void main(String[] args) {
     System.out.println("Press Enter to quit...");
 
-    HueAdapter adapter = new HueAdapter();
+    HueAdapter adapter = new HueAdapter(APP_NAME);
 
     MainListener listener = new MainListener();
 
