@@ -1,4 +1,4 @@
-package com.leaplight.hue;
+package com.huey;
 
 import com.philips.lighting.hue.sdk.PHAccessPoint;
 import com.philips.lighting.hue.sdk.PHMessageType;

@@ -1,6 +1,6 @@
 package com.leaplight;
 
-import com.leaplight.hue.HueController;
+import com.huey.HueController;
 import com.leaplight.listener.MainListener;
 import com.leapmotion.leap.Controller;
 import java.io.IOException;
