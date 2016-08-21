@@ -9,7 +9,12 @@ import java.util.List;
 
 final class HueListener extends BaseHueListener {
 
+  // TODO: Store this info somewhere?
+  private static final String USERNAME = "sj9XU74wfQxbjvVrzebxdjX4XbzTN6BNe0imGwTv";
+
   private final PHHueSDK sdk;
+
+  private Boolean isBridgeConnected = false;
 
   HueListener(PHHueSDK sdk) {
     this.sdk = sdk;
@@ -43,6 +48,13 @@ final class HueListener extends BaseHueListener {
     sdk.startPushlinkAuthentication(accessPoint) ;
   }
 
+  @Override public void onBridgeConnected(PHBridge bridge, String username) {
+    System.out.println("Successfully connected to bridge.");
+    isBridgeConnected = true;
+    sdk.setSelectedBridge(bridge);
+    sdk.enableHeartbeat(bridge, PHHueSDK.HB_INTERVAL);
+  }
+
   @Override public void onError(int code, final String message) {
     switch (code) {
       case PHMessageType.PUSHLINK_BUTTON_NOT_PRESSED:
@@ -59,7 +71,20 @@ final class HueListener extends BaseHueListener {
   }
 
   private void connect(PHAccessPoint accessPoint) {
-    System.out.println("Connection to access point: " + accessPoint.getMacAddress());
+    System.out.println("Connecting to access point: " + accessPoint.getMacAddress());
+    accessPoint.setUsername(USERNAME);
     sdk.connect(accessPoint);
+  }
+
+  private void setConnected() {
+    synchronized(isBridgeConnected) {
+      isBridgeConnected = true;
+    }
+  }
+
+  public boolean isConnected() {
+    synchronized(isBridgeConnected) {
+      return isBridgeConnected;
+    }
   }
 }
