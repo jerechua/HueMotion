@@ -5,6 +5,7 @@ import com.philips.lighting.hue.sdk.PHHueSDK;
 public final class HueController {
 
   private static final int CONNECT_WAIT_INTERVAL = 100;
+  private static final String COMPATIBLE_SDK_VERSION = "1.11.2";
 
   private final String appName;
   private final PHHueSDK sdk;
@@ -20,6 +21,10 @@ public final class HueController {
 
     PHHueSDK sdk = PHHueSDK.getInstance();
     HueListener listener = new HueListener(sdk);
+    if (!sdk.getSDKVersion().equals(COMPATIBLE_SDK_VERSION)) {
+      System.out.println("Expected SDK version to be: " + COMPATIBLE_SDK_VERSION);
+      System.exit(1);
+    }
 
     sdk.setAppName(appName);
     sdk.getNotificationManager().registerSDKListener(listener);
