@@ -12,7 +12,7 @@ abstract class BaseHueListener implements PHSDKListener {
 
   @Override public void onAuthenticationRequired(PHAccessPoint accessPoint) {}
 
-  @Override public void onBridgeConnected(PHBridge bridge, String message) {}
+  @Override public void onBridgeConnected(PHBridge bridge, String username) {}
 
   @Override public void onCacheUpdated(List cacheNotificationsList, PHBridge bridge) {}
 
