@@ -2,15 +2,16 @@ package com.leaplight.hue;
 
 import com.philips.lighting.hue.sdk.PHHueSDK;
 
-public final class HueAdapter {
+public final class HueController {
 
   private static final int CONNECT_WAIT_INTERVAL = 100;
 
   private final String appName;
+  private final PHHueSDK sdk;
 
-  public HueAdapter(String appName) {
+  public HueController(String appName) {
     this.appName = appName;
-    setupSDK(appName);
+    this.sdk = setupSDK(appName);
   }
 
   private PHHueSDK setupSDK(String appName) {
@@ -36,7 +37,6 @@ public final class HueAdapter {
       } catch (Exception e) {
         throw new RuntimeException(e);
       }
-
     }
   }
 }
