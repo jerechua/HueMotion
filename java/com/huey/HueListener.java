@@ -3,8 +3,10 @@ package com.huey;
 import com.philips.lighting.hue.sdk.PHAccessPoint;
 import com.philips.lighting.hue.sdk.PHHueSDK;
 import com.philips.lighting.hue.sdk.PHMessageType;
+import com.philips.lighting.hue.sdk.PHMessageType;
 import com.philips.lighting.hue.sdk.PHSDKListener;
 import com.philips.lighting.model.PHBridge;
+import com.philips.lighting.model.PHBridgeResourcesCache;
 import java.util.List;
 
 final class HueListener extends BaseHueListener {
@@ -14,6 +16,7 @@ final class HueListener extends BaseHueListener {
 
   private final PHHueSDK sdk;
 
+  // Synchronized. Checks whether or not the selected bridge is connected.
   private Boolean isBridgeConnected = false;
 
   HueListener(PHHueSDK sdk) {
@@ -37,9 +40,20 @@ final class HueListener extends BaseHueListener {
     connect(accessPoints.get(0));
   }
 
-  @Override public void onCacheUpdated(List cacheNotificationsList, PHBridge bridge) {
-    if (cacheNotificationsList.contains(PHMessageType.LIGHTS_CACHE_UPDATED)) {
-       System.out.println("Lights Cache Updated ");
+  @Override public void onCacheUpdated(List<Integer> cacheNotificationsList, PHBridge bridge) {
+    System.out.println("onCacheUpdated...");
+
+    for (Integer type : cacheNotificationsList) {
+      // Apparently these PHMessageTypes aren't final, so we can't use switches?
+      if (type == PHMessageType.LIGHTS_CACHE_UPDATED) {
+        System.out.println("Lights Cache Updated");
+
+      } else if (type == PHMessageType.BRIDGE_CONFIGURATION_CACHE_UPDATED) {
+        System.out.println("Bridge cache updated.");
+
+      } else {
+        System.out.println("onCacheUpdated with code: " + Integer.toString(type));
+      }
     }
   }
 
@@ -50,9 +64,11 @@ final class HueListener extends BaseHueListener {
 
   @Override public void onBridgeConnected(PHBridge bridge, String username) {
     System.out.println("Successfully connected to bridge.");
-    isBridgeConnected = true;
     sdk.setSelectedBridge(bridge);
     sdk.enableHeartbeat(bridge, PHHueSDK.HB_INTERVAL);
+    synchronized(isBridgeConnected) {
+      isBridgeConnected = true;
+    }
   }
 
   @Override public void onError(int code, final String message) {
@@ -86,5 +102,9 @@ final class HueListener extends BaseHueListener {
     synchronized(isBridgeConnected) {
       return isBridgeConnected;
     }
+  }
+
+  public PHBridgeResourcesCache getCache() {
+    return sdk.getSelectedBridge().getResourceCache();
   }
 }

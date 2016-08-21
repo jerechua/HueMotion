@@ -24,7 +24,7 @@ abstract class BaseHueListener implements PHSDKListener {
     System.out.println(username);
   }
 
-  @Override public void onCacheUpdated(List cacheNotificationsList, PHBridge bridge) {
+  @Override public void onCacheUpdated(List<Integer> cacheNotificationsList, PHBridge bridge) {
     System.out.println("onCacheUpdated");
     System.out.println(cacheNotificationsList);
     System.out.println(bridge);

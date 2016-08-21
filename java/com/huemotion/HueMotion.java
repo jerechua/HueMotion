@@ -3,6 +3,7 @@ package com.huemotion;
 import com.huey.HueController;
 import com.huemotion.listener.MainListener;
 import com.leapmotion.leap.Controller;
+import com.philips.lighting.model.PHLight;
 
 final class HueMotion {
 
