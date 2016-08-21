@@ -1,6 +1,6 @@
 package com.leaplight;
 
-import com.leaplight.listeners.MainListener;
+import com.leaplight.listener.MainListener;
 import com.leapmotion.leap.Controller;
 import java.io.IOException;
 
