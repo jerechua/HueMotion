@@ -1,7 +1,6 @@
 package com.leaplight.hue;
 
 import com.philips.lighting.hue.sdk.PHHueSDK;
-import com.philips.lighting.hue.sdk.PHBridgeSearchManager;
 
 public final class HueAdapter {
 
@@ -17,8 +16,10 @@ public final class HueAdapter {
     sdk.setAppName(appName);
     sdk.getNotificationManager().registerSDKListener(new HueListener(sdk));
 
-    PHBridgeSearchManager searchManager
-        = (PHBridgeSearchManager)sdk.getSDKService(PHHueSDK.SEARCH_BRIDGE);
-    searchManager.search(true, true);
+    HueBridgeFinder.newFinder(sdk)
+      .searchUPNP(true)
+      .searchPortal(true)
+      .find();
+
   }
 }

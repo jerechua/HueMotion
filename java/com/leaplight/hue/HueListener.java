@@ -12,8 +12,13 @@ final class HueListener extends BaseHueListener {
   private final PHHueSDK sdk;
 
   HueListener(PHHueSDK sdk) {
-    super();
     this.sdk = sdk;
+  }
+
+  @Override public void onAccessPointsFound(List<PHAccessPoint> accessPoints) {
+    for (PHAccessPoint accessPoint : accessPoints) {
+      System.out.println(accessPoint);
+    }
   }
 
   @Override public void onCacheUpdated(List cacheNotificationsList, PHBridge bridge) {
