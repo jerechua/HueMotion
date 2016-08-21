@@ -34,7 +34,7 @@ public final class MainListener extends Listener {
       return;
     }
 
-    float delta = previous.hands().frontmost().sphereRadius() - current.hands().frontmost().sphereRadius();
+    float delta = previousHands.frontmost().sphereRadius() - currentHands.frontmost().sphereRadius();
     System.out.println(delta);
   }
 }
