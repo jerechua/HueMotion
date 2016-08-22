@@ -35,6 +35,21 @@ public final class HueLights {
     return group == null;
   }
 
+  /** Returns all Hue lights that have color enabled */
+  public HueLights getColorEnabledLights() {
+    // TODO: Consider just making this static.
+
+    ImmutableMap.Builder<String, PHLight> colorEnabledBuilder = ImmutableMap.builder();
+    for (Map.Entry<String, PHLight> entry : lights.entrySet()) {
+      if (entry.getValue().supportsColor()) {
+        colorEnabledBuilder.put(entry.getKey(), entry.getValue());
+      }
+    }
+    // NOTE: This new HueLights has no group now, otherwise we would end up updating by
+    // group, which will be wrong.
+    return new HueLights(bridge, colorEnabledBuilder.build());
+  }
+
   /** Returns the number of lights there are in the group */
   public int size() {
     return lights.size();
