@@ -63,7 +63,9 @@ public final class HueController {
 
   /** Returns a controller for all lights in the cache. */
   public HueLights getAllHueLights() {
-    return new HueLights(ImmutableMap.copyOf(getSelectedBridgeCache().getLights()));
+    return new HueLights(
+        listener.getSelectedBridge(),
+        ImmutableMap.copyOf(getSelectedBridgeCache().getLights()));
   }
 
   /** Returns the map of <Group name> -> PHGroup */
@@ -95,7 +97,10 @@ public final class HueController {
       groupLightsBuilder.put(lightID, allLights.get(lightID));
     }
 
-    return new HueLights(groupLightsBuilder.build(), groupName);
+    return new HueLights(
+        listener.getSelectedBridge(),
+        groupLightsBuilder.build(),
+        allGroups.get(groupName));
   }
 
   /** Returns the list of group names */

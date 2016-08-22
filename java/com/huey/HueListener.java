@@ -105,6 +105,10 @@ final class HueListener extends BaseHueListener {
     }
   }
 
+  public PHBridge getSelectedBridge() {
+    return sdk.getSelectedBridge();
+  }
+
   public PHBridgeResourcesCache getSelectedBridgeCache() {
     return sdk.getSelectedBridge().getResourceCache();
   }
