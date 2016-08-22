@@ -8,10 +8,13 @@ import com.leapmotion.leap.Controller;
 final class HueMotion {
 
   private static final String APP_NAME = "HueMotion";
+  // private final HueController hueController;
+  private final Controller leapController;
+  private final MainListener listener;
 
   HueMotion() {
-    HueController hueController = new HueController(APP_NAME);
-    hueController.awaitReady();
+    // hueController = new HueController(APP_NAME);
+    // hueController.awaitReady();
 
 
     // HueLights lights = null;
@@ -24,8 +27,10 @@ final class HueMotion {
     // System.out.println("Found: " + Integer.toString(lights.size()) + " lights in the group");
     // lights.setBrightness(99999);
 
-    MainListener listener = new MainListener();
-    Controller leapController = new Controller();
-    leapController.addListener(listener);
+    System.out.println("Starting leap motion device");
+    listener = new MainListener();
+    leapController = new Controller();
+    leapController.addListener(new MainListener());
+
   }
 }

@@ -69,9 +69,18 @@ public final class HueLights {
     setLightState(lightState);
   }
 
+  /**
+   * Returns the brightness of a light.
+   */
+  public int getBrightness() {
+    // This is a pretty bad hack :(
+    // Need a way to get brightness of all lights.
+    PHLightState lightState = lights.values().asList().get(0).getLastKnownLightState();
+    return lightState.getBrightness();
+  }
+
   /** Does the actual logic to set all the light states. */
   private void setLightState(PHLightState lightState) {
-    System.out.println(lightState.validateState());
 
     // If we're making it 0, but the light is still on, the light won't actually turn off, so we
     // have to manually turn it off.
@@ -85,6 +94,8 @@ public final class HueLights {
       bridge.setLightStateForGroup(group.getIdentifier(), lightState);
       return;
     }
+
+    lightState.setTransitionTime(0);
 
     for (PHLight light : lights.values()) {
       bridge.updateLightState(light, lightState);
