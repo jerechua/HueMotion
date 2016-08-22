@@ -1,7 +1,7 @@
 package com.huey;
 
+import com.google.common.collect.ImmutableMap;
 import com.philips.lighting.model.PHLight;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -11,17 +11,17 @@ import java.util.Map;
  */
 public final class HueLights {
 
-  // Map of light identifiers to the light object.
-  private final Map<String, PHLight> lights;
+  // Map of light ID to the light object.
+  private final ImmutableMap<String, PHLight> lights;
   private final String groupName;
 
   // Don't allow other people to create this class.
-  HueLights(Map<String, PHLight> lights) {
+  HueLights(ImmutableMap<String, PHLight> lights) {
     this(lights, null);
   }
 
   // Don't allow other people to create this class.
-  HueLights(Map<String, PHLight> lights, String groupName) {
+  HueLights(ImmutableMap<String, PHLight> lights, String groupName) {
     this.lights = lights;
     this.groupName = groupName;
   }
@@ -33,13 +33,14 @@ public final class HueLights {
 
   /** Returns all Hue lights that have color enabled */
   public HueLights getColorEnabledLights() {
-    HashMap<String, PHLight> colorEnabled = new HashMap<>();
+
+    ImmutableMap.Builder<String, PHLight> colorEnabledBuilder = ImmutableMap.builder();
     for (Map.Entry<String, PHLight> entry : lights.entrySet()) {
       if (entry.getValue().supportsColor()) {
-        colorEnabled.put(entry.getKey(), entry.getValue());
+        colorEnabledBuilder.put(entry.getKey(), entry.getValue());
       }
     }
-    return new HueLights(colorEnabled, groupName);
+    return new HueLights(colorEnabledBuilder.build(), groupName);
   }
 
   /** Returns the number of lights there are in the group */

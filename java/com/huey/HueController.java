@@ -31,6 +31,7 @@ public final class HueController {
   private PHHueSDK setupSDK(String appName) {
     if (!sdk.getSDKVersion().equals(COMPATIBLE_SDK_VERSION)) {
       System.out.println("Expected SDK version to be: " + COMPATIBLE_SDK_VERSION);
+      // TODO: This should really just  be a warning log.
       System.exit(1);
     }
 
@@ -62,11 +63,12 @@ public final class HueController {
 
   /** Returns a controller for all lights in the cache. */
   public HueLights getAllHueLights() {
-    return new HueLights(getSelectedBridgeCache().getLights());
+    return new HueLights(ImmutableMap.copyOf(getSelectedBridgeCache().getLights()));
   }
 
   /** Returns the map of <Group name> -> PHGroup */
   public ImmutableMap<String, PHGroup> getGroupsByName() {
+
     ImmutableMap.Builder<String, PHGroup> groupMapBuilder = ImmutableMap.builder();
     for (PHGroup group : getSelectedBridgeCache().getAllGroups()) {
       groupMapBuilder.put(group.getName(), group);
