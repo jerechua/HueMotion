@@ -13,6 +13,8 @@ public final class HueMotionMain {
       System.in.read();
     } catch (IOException e) {
       e.printStackTrace();
+    } finally {
+      System.exit(0);
     }
   }
 }
