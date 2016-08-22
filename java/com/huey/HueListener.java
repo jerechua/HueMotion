@@ -28,6 +28,7 @@ final class HueListener extends BaseHueListener {
     if (accessPoints.size() <= 0) {
       // TODO: Consider re-searching access points here.
       System.out.println("No access points found");
+      return;
     }
 
     for (PHAccessPoint accessPoint : accessPoints) {
@@ -104,7 +105,7 @@ final class HueListener extends BaseHueListener {
     }
   }
 
-  public PHBridgeResourcesCache getCache() {
+  public PHBridgeResourcesCache getSelectedBridgeCache() {
     return sdk.getSelectedBridge().getResourceCache();
   }
 }

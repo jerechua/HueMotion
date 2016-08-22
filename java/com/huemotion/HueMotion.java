@@ -1,9 +1,8 @@
 package com.huemotion;
 
-import com.huey.HueController;
 import com.huemotion.listener.MainListener;
+import com.huey.HueController;
 import com.leapmotion.leap.Controller;
-import com.philips.lighting.model.PHLight;
 
 final class HueMotion {
 
@@ -11,7 +10,7 @@ final class HueMotion {
 
   HueMotion() {
     HueController hueController = new HueController(APP_NAME);
-    hueController.getAllLights();
+    hueController.getAllHueLights();
 
     MainListener listener = new MainListener();
 

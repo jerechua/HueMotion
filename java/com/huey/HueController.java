@@ -3,8 +3,9 @@ package com.huey;
 import com.philips.lighting.hue.sdk.PHHueSDK;
 import com.philips.lighting.model.PHBridge;
 import com.philips.lighting.model.PHBridgeResourcesCache;
+import com.philips.lighting.model.PHGroup;
 import com.philips.lighting.model.PHLight;
-import java.util.List;
+import java.util.Map;
 
 public final class HueController {
 
@@ -51,11 +52,37 @@ public final class HueController {
     }
   }
 
-  public PHBridgeResourcesCache getCache() {
-    return listener.getCache();
+  /** Retrieves the cache from the bridge. */
+  public PHBridgeResourcesCache getSelectedBridgeCache() {
+    return listener.getSelectedBridgeCache();
   }
 
-  public List<PHLight> getAllLights() {
-    return getCache().getAllLights();
+  /** Returns a controller for all lights in the cache. */
+  public HueLights getAllHueLights() {
+    return new HueLights(getSelectedBridgeCache().getLights());
   }
+
+  public HueLights getHueLightsByGroup(String groupName)
+      throws GroupNotFoundException, LightNotFoundException {
+
+    Map<String, PHGroup> groups = getSelectedBridgeCache().getGroups();
+    if (!groups.containsKey(groupName)) {
+      throw new GroupNotFoundException();
+    }
+    Map<String, PHLight> lights = getSelectedBridgeCache().getLights();
+    for (String lightID : groups.get(groupName).getLightIdentifiers()) {
+      if (!lights.containsKey(lightID)) {
+        throw new LightNotFoundException();
+      }
+      lights.put(lightID, lights.get(lightID));
+    }
+    return new HueLights(lights, groupName);
+  }
+
+  // Happens when the group does not exist.
+  public final class GroupNotFoundException extends Exception {}
+
+  // Happens when the light identifier is listed in the group's lights, but it's not an actual
+  // light available.
+  public final class LightNotFoundException extends Exception {}
 }
