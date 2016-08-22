@@ -28,7 +28,7 @@ public final class HueController {
     setupSDK(appName);
   }
 
-  private PHHueSDK setupSDK(String appName) {
+  private void setupSDK(String appName) {
     if (!sdk.getSDKVersion().equals(COMPATIBLE_SDK_VERSION)) {
       System.out.println("Expected SDK version to be: " + COMPATIBLE_SDK_VERSION);
       // TODO: This should really just  be a warning log.
@@ -42,10 +42,16 @@ public final class HueController {
       .searchUPNP(true)
       .searchPortal(true)
       .find();
+  }
 
+  /**
+   * The Hue controller logic is all async, call awaitReady() to wait for the controller to be
+   * ready.
+   */
+  public void awaitReady() {
     while (true) {
       if (listener.isConnected()) {
-        return sdk;
+        return;
       }
       System.out.println("Waiting for SDK to connect...");
       try {

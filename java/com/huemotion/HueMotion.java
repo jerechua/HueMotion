@@ -11,20 +11,21 @@ final class HueMotion {
 
   HueMotion() {
     HueController hueController = new HueController(APP_NAME);
+    hueController.awaitReady();
 
-    HueLights lights = null;
-    try {
-      lights = hueController.getHueLightsByGroup("Bedroom");
-    } catch (Exception e) {
-      // TODO: Remove this!! It's only for debugging.
-      throw new RuntimeException(e);
-    }
-    System.out.println("Found: " + Integer.toString(lights.size()) + " lights in the group");
-    lights.setBrightness(99999);
+
+    // HueLights lights = null;
+    // try {
+    //   lights = hueController.getHueLightsByGroup("Bedroom");
+    // } catch (Exception e) {
+    //   // TODO: Remove this!! It's only for debugging.
+    //   throw new RuntimeException(e);
+    // }
+    // System.out.println("Found: " + Integer.toString(lights.size()) + " lights in the group");
+    // lights.setBrightness(99999);
 
     MainListener listener = new MainListener();
-
-    // Controller leapController = new Controller();
-    // leapController.addListener(listener);
+    Controller leapController = new Controller();
+    leapController.addListener(listener);
   }
 }
