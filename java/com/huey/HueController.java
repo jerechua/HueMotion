@@ -62,6 +62,7 @@ public final class HueController {
     return new HueLights(getSelectedBridgeCache().getLights());
   }
 
+  /** Returns all the lights in the cache with the group named groupName */
   public HueLights getHueLightsByGroup(String groupName)
       throws GroupNotFoundException, LightNotFoundException {
 

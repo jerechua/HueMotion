@@ -2,6 +2,7 @@ package com.huey;
 
 import com.philips.lighting.model.PHLight;
 import java.util.Map;
+import java.util.HashMap;
 
 /**
  * Wrapper class for {@link com.philips.lighting.model.PHLight}.
@@ -28,6 +29,17 @@ public final class HueLights {
   /** Returns whether or not this group of lights is "all" the lights */
   public boolean isAllLights() {
     return groupName == null;
+  }
+
+  /** Returns all Hue lights that have color enabled */
+  public HueLights getColorEnabledLights() {
+    HashMap<String, PHLight> colorEnabled = new HashMap<>();
+    for (Map.Entry<String, PHLight> entry : lights.entrySet()) {
+      if (entry.getValue().supportsColor()) {
+        colorEnabled.put(entry.getKey(), entry.getValue());
+      }
+    }
+    return new HueLights(colorEnabled, groupName);
   }
 
 }
