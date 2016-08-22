@@ -33,6 +33,7 @@ public final class HueLights {
 
   /** Returns all Hue lights that have color enabled */
   public HueLights getColorEnabledLights() {
+    // TODO: Consider just making this static.
 
     ImmutableMap.Builder<String, PHLight> colorEnabledBuilder = ImmutableMap.builder();
     for (Map.Entry<String, PHLight> entry : lights.entrySet()) {
