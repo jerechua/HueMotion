@@ -1,9 +1,10 @@
 package com.huey;
 
 import com.google.common.collect.ImmutableMap;
+import com.philips.lighting.model.PHBridge;
 import com.philips.lighting.model.PHGroup;
 import com.philips.lighting.model.PHLight;
-import com.philips.lighting.model.PHBridge;
+import com.philips.lighting.model.PHLightState;
 import java.util.Map;
 
 /**
@@ -55,8 +56,38 @@ public final class HueLights {
     return lights.size();
   }
 
-  public void setRGB() {
-    System.out.println();
 
+  /**
+   * Sets the brightness of the hue light.
+   *
+   * @param brightness is bounded between [0, 254] inclusive.
+   */
+  public void setBrightness(int brightness) {
+    PHLightState lightState = new PHLightState();
+    int boundedBrightness = Math.min(Math.max(brightness, 0), 254);
+    lightState.setBrightness(boundedBrightness);
+    setLightState(lightState);
+  }
+
+  /** Does the actual logic to set all the light states. */
+  private void setLightState(PHLightState lightState) {
+    System.out.println(lightState.validateState());
+
+    // If we're making it 0, but the light is still on, the light won't actually turn off, so we
+    // have to manually turn it off.
+    if (lightState.getBrightness() <= 0) {
+      lightState.setOn(false);
+    } else {
+      lightState.setOn(true);
+    }
+
+    if (group != null) {
+      bridge.setLightStateForGroup(group.getIdentifier(), lightState);
+      return;
+    }
+
+    for (PHLight light : lights.values()) {
+      bridge.updateLightState(light, lightState);
+    }
   }
 }

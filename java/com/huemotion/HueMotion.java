@@ -20,7 +20,7 @@ final class HueMotion {
       throw new RuntimeException(e);
     }
     System.out.println("Found: " + Integer.toString(lights.size()) + " lights in the group");
-    lights.setRGB();
+    lights.setBrightness(99999);
 
     MainListener listener = new MainListener();
 

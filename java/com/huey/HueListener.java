@@ -41,23 +41,6 @@ final class HueListener extends BaseHueListener {
     connect(accessPoints.get(0));
   }
 
-  @Override public void onCacheUpdated(List<Integer> cacheNotificationsList, PHBridge bridge) {
-    System.out.println("onCacheUpdated...");
-
-    for (Integer type : cacheNotificationsList) {
-      // Apparently these PHMessageTypes aren't final, so we can't use switches?
-      if (type == PHMessageType.LIGHTS_CACHE_UPDATED) {
-        System.out.println("Lights Cache Updated");
-
-      } else if (type == PHMessageType.BRIDGE_CONFIGURATION_CACHE_UPDATED) {
-        System.out.println("Bridge cache updated.");
-
-      } else {
-        System.out.println("onCacheUpdated with code: " + Integer.toString(type));
-      }
-    }
-  }
-
   @Override public void onAuthenticationRequired(PHAccessPoint accessPoint) {
     System.out.println("Authentication is required! Please press the bridge button.");
     sdk.startPushlinkAuthentication(accessPoint) ;
@@ -86,6 +69,10 @@ final class HueListener extends BaseHueListener {
         System.out.println(message);
     }
   }
+
+  // These two get updated too frequently.. why?
+  @Override public void onCacheUpdated(List<Integer> cacheNotificationsList, PHBridge bridge) {}
+  @Override public void onConnectionResumed(PHBridge bridge) {}
 
   private void connect(PHAccessPoint accessPoint) {
     System.out.println("Connecting to access point: " + accessPoint.getMacAddress());
