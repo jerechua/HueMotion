@@ -1,8 +1,8 @@
 package com.huey;
 
 import com.philips.lighting.model.PHLight;
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Wrapper class for {@link com.philips.lighting.model.PHLight}.
@@ -40,6 +40,15 @@ public final class HueLights {
       }
     }
     return new HueLights(colorEnabled, groupName);
+  }
+
+  /** Returns the number of lights there are in the group */
+  public int size() {
+    return lights.size();
+  }
+
+  public void setRGB() {
+
   }
 
 }

@@ -1,5 +1,8 @@
 package com.huey;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
 import com.philips.lighting.hue.sdk.PHHueSDK;
 import com.philips.lighting.model.PHBridge;
 import com.philips.lighting.model.PHBridgeResourcesCache;
@@ -62,22 +65,40 @@ public final class HueController {
     return new HueLights(getSelectedBridgeCache().getLights());
   }
 
+  /** Returns the map of <Group name> -> PHGroup */
+  public ImmutableMap<String, PHGroup> getGroupsByName() {
+    ImmutableMap.Builder<String, PHGroup> groupMapBuilder = ImmutableMap.builder();
+    for (PHGroup group : getSelectedBridgeCache().getAllGroups()) {
+      groupMapBuilder.put(group.getName(), group);
+    }
+    return groupMapBuilder.build();
+  }
+
   /** Returns all the lights in the cache with the group named groupName */
   public HueLights getHueLightsByGroup(String groupName)
       throws GroupNotFoundException, LightNotFoundException {
 
-    Map<String, PHGroup> groups = getSelectedBridgeCache().getGroups();
-    if (!groups.containsKey(groupName)) {
+    ImmutableMap<String, PHGroup> allGroups = getGroupsByName();
+    if (!allGroups.containsKey(groupName)) {
       throw new GroupNotFoundException();
     }
-    Map<String, PHLight> lights = getSelectedBridgeCache().getLights();
-    for (String lightID : groups.get(groupName).getLightIdentifiers()) {
-      if (!lights.containsKey(lightID)) {
+
+    Map<String, PHLight> allLights = getSelectedBridgeCache().getLights();
+    ImmutableMap.Builder<String, PHLight> groupLightsBuilder = ImmutableMap.builder();
+
+    for (String lightID : allGroups.get(groupName).getLightIdentifiers()) {
+      if (!allLights.containsKey(lightID)) {
         throw new LightNotFoundException();
       }
-      lights.put(lightID, lights.get(lightID));
+      groupLightsBuilder.put(lightID, allLights.get(lightID));
     }
-    return new HueLights(lights, groupName);
+
+    return new HueLights(groupLightsBuilder.build(), groupName);
+  }
+
+  /** Returns the list of group names */
+  public ImmutableSet<String> getGroupNames() {
+    return getGroupsByName().keySet();
   }
 
   // Happens when the group does not exist.
