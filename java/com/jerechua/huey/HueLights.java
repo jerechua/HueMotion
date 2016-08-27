@@ -13,6 +13,9 @@ import java.util.Map;
  * TODO: This object may be short-lived if the cache updates? Need to verify.
  */
 public final class HueLights {
+  // Unless it's all the lights on the bridge, the number of lights required in the group before the
+  // Groups API is used.
+  private static final int MAX_LIGHTS_BEFORE_USING_GROUPS_API = 15;
 
   // Map of light ID to the light object.
   private final ImmutableMap<String, PHLight> lights;
@@ -79,25 +82,29 @@ public final class HueLights {
     return lightState.getBrightness();
   }
 
-  /** Does the actual logic to set all the light states. */
+  /**
+  * Does the actual logic to set all the light states.
+  *
+  * <p><ul>From http://www.developers.meethue.com/things-you-need-know:
+  * <li>Updating light attributes is more efficient via light api than it is with group API for
+  * ~dozen lights.</li>
+  * <li>Don’t always send ‘ON’</li>
+  */
   private void setLightState(PHLightState lightState) {
 
-    // If we're making it 0, but the light is still on, the light won't actually turn off, so we
-    // have to manually turn it off.
-    if (lightState.getBrightness() <= 0) {
-      lightState.setOn(false);
-    } else {
-      lightState.setOn(true);
-    }
-
-    if (group != null) {
+    if (group != null && lights.size() > MAX_LIGHTS_BEFORE_USING_GROUPS_API) {
+      // If we're making it 0, but the light is still on, the light won't actually turn off, so we
+      // have to manually turn it on/off.
+      lightState.setOn(lightState.getBrightness() > 0);
       bridge.setLightStateForGroup(group.getIdentifier(), lightState);
       return;
     }
 
-    lightState.setTransitionTime(0);
-
     for (PHLight light : lights.values()) {
+      // Only update light state if it's not already that light state.
+      if (light.getLastKnownLightState().isOn() ^ (lightState.getBrightness() > 0)) {
+        lightState.setOn(lightState.getBrightness() > 0);
+      }
       bridge.updateLightState(light, lightState);
     }
   }
