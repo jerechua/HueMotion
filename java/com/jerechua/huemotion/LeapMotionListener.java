@@ -1,4 +1,4 @@
-package com.jerechua.huemotion.listener;
+package com.jerechua.huemotion;
 
 import com.leapmotion.leap.Bone;
 import com.leapmotion.leap.Controller;
@@ -10,7 +10,7 @@ import com.google.common.util.concurrent.RateLimiter;
 import com.jerechua.huey.HueController;
 import com.jerechua.huey.HueLights;
 
-public final class MainListener extends Listener {
+public final class LeapMotionListener extends Listener {
 
   private static final int FRAME_DELTA = 10;
   private static final int HUE_UPDATES_PER_SECOND = 2;
@@ -20,7 +20,7 @@ public final class MainListener extends Listener {
 
   private Frame lastFrame;
 
-  public MainListener(HueController hueController) {
+  public LeapMotionListener(HueController hueController) {
     this.hueController = hueController;
   }
 
