@@ -1,10 +1,14 @@
 package com.jerechua.huey;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.common.util.concurrent.ListeningExecutorService;
+import com.google.common.util.concurrent.MoreExecutors;
 import com.philips.lighting.model.PHBridge;
 import com.philips.lighting.model.PHGroup;
 import com.philips.lighting.model.PHLight;
 import com.philips.lighting.model.PHLightState;
+import java.util.concurrent.Callable;
+import java.util.concurrent.Executors;
 import java.util.Map;
 
 /**
@@ -90,7 +94,7 @@ public final class HueLights {
   * ~dozen lights.</li>
   * <li>Don’t always send ‘ON’</li>
   */
-  private void setLightState(PHLightState lightState) {
+  private void setLightState(final PHLightState lightState) {
 
     if (group != null && lights.size() > MAX_LIGHTS_BEFORE_USING_GROUPS_API) {
       // If we're making it 0, but the light is still on, the light won't actually turn off, so we
@@ -100,12 +104,23 @@ public final class HueLights {
       return;
     }
 
-    for (PHLight light : lights.values()) {
-      // Only update light state if it's not already that light state.
-      if (light.getLastKnownLightState().isOn() ^ (lightState.getBrightness() > 0)) {
-        lightState.setOn(lightState.getBrightness() > 0);
-      }
-      bridge.updateLightState(light, lightState);
+    // TODO: Should this be static final?
+    ListeningExecutorService executor = MoreExecutors.listeningDecorator(
+        Executors.newFixedThreadPool(MAX_LIGHTS_BEFORE_USING_GROUPS_API));
+
+    for (final PHLight light : lights.values()) {
+      executor.submit(new Callable<Void>() {
+        @Override public Void call() {
+          // Only update light state if it's not already that light state.
+          if (light.getLastKnownLightState().isOn() ^ (lightState.getBrightness() > 0)) {
+            lightState.setOn(lightState.getBrightness() > 0);
+          }
+          bridge.updateLightState(light, lightState);
+          return null;
+        }
+      });
     }
+
+    executor.shutdown();
   }
 }
