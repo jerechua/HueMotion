@@ -1,4 +1,4 @@
-package com.huey;
+package com.jerechua.huey;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;

@@ -1,8 +1,8 @@
-package com.huemotion;
+package com.jerechua.huemotion;
 
-import com.huemotion.listener.MainListener;
+import com.jerechua.huemotion.listener.MainListener;
 import com.leapmotion.leap.Controller;
-import com.huey.HueController;
+import com.jerechua.huey.HueController;
 import java.io.IOException;
 
 public final class HueMotionMain {

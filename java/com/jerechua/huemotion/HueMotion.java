@@ -1,8 +1,8 @@
-package com.huemotion;
+package com.jerechua.huemotion;
 
-import com.huemotion.listener.MainListener;
-import com.huey.HueController;
-import com.huey.HueLights;
+import com.jerechua.huemotion.listener.MainListener;
+import com.jerechua.huey.HueController;
+import com.jerechua.huey.HueLights;
 import com.leapmotion.leap.Controller;
 
 final class HueMotion {

@@ -1,4 +1,4 @@
-package com.huey;
+package com.jerechua.huey;
 
 import com.philips.lighting.hue.sdk.PHAccessPoint;
 import com.philips.lighting.hue.sdk.PHMessageType;

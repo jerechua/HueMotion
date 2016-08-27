@@ -1,4 +1,4 @@
-package com.huey;
+package com.jerechua.huey;
 
 import com.google.common.collect.ImmutableMap;
 import com.philips.lighting.model.PHBridge;

@@ -1,4 +1,4 @@
-package com.huemotion.listener;
+package com.jerechua.huemotion.listener;
 
 import com.leapmotion.leap.Bone;
 import com.leapmotion.leap.Controller;
@@ -7,8 +7,8 @@ import com.leapmotion.leap.Hand;
 import com.leapmotion.leap.HandList;
 import com.leapmotion.leap.Listener;
 import com.google.common.util.concurrent.RateLimiter;
-import com.huey.HueController;
-import com.huey.HueLights;
+import com.jerechua.huey.HueController;
+import com.jerechua.huey.HueLights;
 
 public final class MainListener extends Listener {
 
