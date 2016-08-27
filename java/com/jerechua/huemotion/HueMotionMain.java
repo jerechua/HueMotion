@@ -1,7 +1,7 @@
 package com.jerechua.huemotion;
 
-import com.leapmotion.leap.Controller;
 import com.jerechua.huey.HueController;
+import com.leapmotion.leap.Controller;
 import java.io.IOException;
 
 public final class HueMotionMain {

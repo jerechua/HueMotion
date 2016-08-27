@@ -1,14 +1,14 @@
 package com.jerechua.huemotion;
 
+import com.google.common.util.concurrent.RateLimiter;
+import com.jerechua.huey.HueController;
+import com.jerechua.huey.HueLights;
 import com.leapmotion.leap.Bone;
 import com.leapmotion.leap.Controller;
 import com.leapmotion.leap.Frame;
 import com.leapmotion.leap.Hand;
 import com.leapmotion.leap.HandList;
 import com.leapmotion.leap.Listener;
-import com.google.common.util.concurrent.RateLimiter;
-import com.jerechua.huey.HueController;
-import com.jerechua.huey.HueLights;
 
 public final class LeapMotionListener extends Listener {
 

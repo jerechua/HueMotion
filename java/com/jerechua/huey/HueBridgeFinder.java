@@ -1,7 +1,7 @@
 package com.jerechua.huey;
 
-import com.philips.lighting.hue.sdk.PHHueSDK;
 import com.philips.lighting.hue.sdk.PHBridgeSearchManager;
+import com.philips.lighting.hue.sdk.PHHueSDK;
 
 /** Utility to find bridges easier. */
 final class HueBridgeFinder {
