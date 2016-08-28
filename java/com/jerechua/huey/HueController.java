@@ -13,6 +13,7 @@ import java.util.Map;
 public final class HueController {
 
   private static final int CONNECT_WAIT_INTERVAL = 100;
+  // TODO: Use Maven?
   private static final String COMPATIBLE_SDK_VERSION = "1.11.2";
 
   private final String appName;
