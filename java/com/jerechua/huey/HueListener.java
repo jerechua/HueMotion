@@ -11,15 +11,14 @@ import java.util.List;
 
 final class HueListener extends BaseHueListener {
 
-  // TODO: Store this info somewhere?
-  private static final String USERNAME = "sj9XU74wfQxbjvVrzebxdjX4XbzTN6BNe0imGwTv";
-
   private final PHHueSDK sdk;
+  private final HueProperties properties;
 
   // Synchronized. Checks whether or not the selected bridge is connected.
   private Boolean isBridgeConnected = false;
 
-  HueListener(PHHueSDK sdk) {
+  HueListener(HueProperties properties, PHHueSDK sdk) {
+    this.properties = properties;
     this.sdk = sdk;
   }
 
@@ -30,10 +29,6 @@ final class HueListener extends BaseHueListener {
       System.out.println("No access points found");
       return;
     }
-
-    for (PHAccessPoint accessPoint : accessPoints) {
-      System.out.println(accessPoint);
-    }
     sdk.getAccessPointsFound().clear();
     sdk.getAccessPointsFound().addAll(accessPoints);
 
@@ -43,11 +38,12 @@ final class HueListener extends BaseHueListener {
 
   @Override public void onAuthenticationRequired(PHAccessPoint accessPoint) {
     System.out.println("Authentication is required! Please press the bridge button.");
-    sdk.startPushlinkAuthentication(accessPoint) ;
+    sdk.startPushlinkAuthentication(accessPoint);
   }
 
   @Override public void onBridgeConnected(PHBridge bridge, String username) {
     System.out.println("Successfully connected to bridge.");
+    properties.updateUserId(username);
     sdk.setSelectedBridge(bridge);
     sdk.enableHeartbeat(bridge, PHHueSDK.HB_INTERVAL);
     synchronized(isBridgeConnected) {
@@ -76,7 +72,9 @@ final class HueListener extends BaseHueListener {
 
   private void connect(PHAccessPoint accessPoint) {
     System.out.println("Connecting to access point: " + accessPoint.getMacAddress());
-    accessPoint.setUsername(USERNAME);
+    if (properties.hasUserId()) {
+      accessPoint.setUsername(properties.getUserId());
+    }
     sdk.connect(accessPoint);
   }
 

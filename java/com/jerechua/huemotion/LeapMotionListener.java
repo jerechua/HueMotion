@@ -26,9 +26,6 @@ public final class LeapMotionListener extends Listener {
 
   @Override public void onConnect(Controller controller) {
     System.out.println("Connected to controller");
-    for(Bone.Type boneType : Bone.Type.values()) {
-        System.out.println(boneType);
-    }
     lastFrame = controller.frame();
   }
 

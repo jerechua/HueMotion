@@ -9,6 +9,7 @@ import com.philips.lighting.model.PHBridgeResourcesCache;
 import com.philips.lighting.model.PHGroup;
 import com.philips.lighting.model.PHLight;
 import java.util.Map;
+import java.io.IOException;
 
 public final class HueController {
 
@@ -16,27 +17,33 @@ public final class HueController {
   // TODO: Use Maven?
   private static final String COMPATIBLE_SDK_VERSION = "1.11.2";
 
-  private final String appName;
   private final PHHueSDK sdk;
   private final HueListener listener;
+  private final HueProperties properties;
 
   public HueController(String appName) {
-    this.appName = appName;
+
+    try {
+      this.properties = HueProperties.createOrLoad(appName);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+
     // TODO: For next version, support multiple bridges. This probably means that this code will
     // need to be moved to a "connect()" function.
     this.sdk = PHHueSDK.getInstance();
-    this.listener = new HueListener(sdk);
-    setupSDK(appName);
+    this.listener = new HueListener(this.properties, sdk);
+    setupSDK();
   }
 
-  private void setupSDK(String appName) {
+  private void setupSDK() {
     if (!sdk.getSDKVersion().equals(COMPATIBLE_SDK_VERSION)) {
       System.out.println("Expected SDK version to be: " + COMPATIBLE_SDK_VERSION);
       // TODO: This should really just  be a warning log.
       System.exit(1);
     }
 
-    sdk.setAppName(appName);
+    sdk.setAppName(properties.getAppName());
     sdk.getNotificationManager().registerSDKListener(listener);
 
     HueBridgeFinder.newFinder(sdk)
@@ -50,11 +57,11 @@ public final class HueController {
    * ready.
    */
   public void awaitReady() {
+    System.out.println("Waiting for SDK to connect...");
     while (true) {
       if (listener.isConnected()) {
         return;
       }
-      System.out.println("Waiting for SDK to connect...");
       try {
         Thread.sleep(CONNECT_WAIT_INTERVAL);
       } catch (Exception e) {
