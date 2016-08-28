@@ -7,6 +7,8 @@ HueMotion is a weekend hack project that allows you to open and close your hand 
 
 For now, opening and closing your hand is the only gesture supported. More to come, hopefully.
 
+![](images/sample.gif)
+
 Dependencies
 ------------
 These are all the dependencies the project needs, and must be placed in the `lib`, minus Java.
