@@ -14,7 +14,7 @@ Dependencies
 These are all the dependencies the project needs, and must be placed in the `lib`, minus Java.
 
 - Java JDK8
-- [LeapMotion Orion SDK](https://developer.leapmotion.com/v2)
+- [LeapMotion v2 SDK](https://developer.leapmotion.com/v2)
 - [Philips Hue SDK (1.11.2)](http://www.developers.meethue.com/documentation/java-multi-platform-and-android-sdk)
   (NOTE: This is currently harded coded in `HueController.java`)
 - [Google Guava core libraries (release 19)](https://github.com/google/guava/wiki/Release19)
