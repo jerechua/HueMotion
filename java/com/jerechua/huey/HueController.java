@@ -8,8 +8,8 @@ import com.philips.lighting.model.PHBridge;
 import com.philips.lighting.model.PHBridgeResourcesCache;
 import com.philips.lighting.model.PHGroup;
 import com.philips.lighting.model.PHLight;
-import java.util.Map;
 import java.io.IOException;
+import java.util.Map;
 
 public final class HueController {
 

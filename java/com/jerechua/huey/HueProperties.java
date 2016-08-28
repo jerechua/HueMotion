@@ -1,16 +1,16 @@
 package com.jerechua.huey;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileInputStream;
-import java.io.Writer;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.InputStreamReader;
+import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.FieldNamingPolicy;
 import com.google.gson.stream.JsonReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStreamReader;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 
 final class HueProperties {
 
